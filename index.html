@@ -1,0 +1,44 @@
+<html>
+    <head></head>
+    <body>
+        <button id="play" onclick="sendVideoEvent('b5s')">5sn geri</button>
+        <button id="play" onclick="sendVideoEvent('play')">Play</button>
+        <button id="play" onclick="sendVideoEvent('pause')">Pause</button>
+        <button id="play" onclick="sendVideoEvent('f5s')">5sn ileri</button>
+        <script>
+          let ws;
+            ws = new WebSocket("ws://websocketvideocom-f2sbogbjj-sel0nidas.vercel.app:3000");
+
+
+const sendData = () => {
+  
+
+    if (ws.readyState === WebSocket.OPEN) {
+      
+      console.log("connected");
+      object = {clientID: null, roomID: "asdad", message: "roomConnecting!", choice: "Room"}
+      ws.send(JSON.stringify(object));
+
+    } else if (ws.readyState == WebSocket.CONNECTING) {
+      // Wait for the open event, maybe do something with promises
+      // depending on your use case. I believe in you developer!
+      ws.addEventListener('open', () => sendData())
+    } else {
+      // etc.
+    }
+  };
+  sendData();
+
+            function sendVideoEvent(event){
+                object = {clientID: "none", roomID: "asdad", message: event, choice: "sendMessage"}
+                ws.send(JSON.stringify(object));
+                console.log(`Event ${event} sent to the server`)
+            }
+            ws.onmessage = (e) => {
+              if(JSON.parse(e.data).message != "ping")
+                console.log(JSON.parse(e.data));
+            }
+
+        </script>
+    </body>
+</html>
