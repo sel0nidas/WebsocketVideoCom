@@ -71,6 +71,8 @@ const createRoom =(data,ws)=>{
       var {roomID,clientID} = data;
       const status = roomExist(roomID);
       if(status){
+          
+        ws['admin']=true;
         ws.send(JSON.stringify({
               'message':'room already exist',
               'status':0
