@@ -180,10 +180,21 @@ wss.on('connection', (ws) => {
     console.log("message wanted")
     message = JSON.parse(message);
     if(paramsExist(message) == true){
-      
+      console.log(message.choice);
       if(message.choice == "sendMessage"){
-        console.table(message)
+        console.table(message.message)
         sendMessage(message, ws, null);
+      }
+      else if(message.choice == "leave"){
+        
+        var indexD = rooms[ws['roomID']]
+        .findIndex(element => {
+          if(element[ws['clientID']])
+            console.log("We Find The Right")
+        });
+        console.log(indexD)
+        rooms[ws['roomID']].splice(indexD, 1);
+
       }
       else{
 
@@ -203,7 +214,7 @@ wss.on('connection', (ws) => {
         */
        
         message.clientID = ""+createID(8);
-       joinRoom(message, ws);
+        joinRoom(message, ws);
       }
       if(ws.admin)
         ws.send(JSON.stringify({
@@ -225,7 +236,12 @@ wss.on('connection', (ws) => {
 
   })
   ws.on('close', ()=>{
-    console.log("a user passed away");
+    console.log("User Passed Away...");
+    /*
+
+    var index = rooms[ws['roomID']].findIndex((element) => element[0] == ws)
+    */
+    //rooms[ws[roomId]].slice(0, index);
   })
   setInterval(()=>{
     ws.send(JSON.stringify({
