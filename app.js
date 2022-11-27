@@ -26,7 +26,6 @@ const paramsExist = (data) =>{
     return false;
   }
 }
-
 const roomExist = (roomID) =>{
     // check for room is already exist or not
     if(roomID in rooms){
