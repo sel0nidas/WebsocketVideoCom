@@ -6,8 +6,6 @@
         <button id="play" onclick="sendVideoEvent('pause')">Pause</button>
         <button id="play" onclick="sendVideoEvent('f5s')">5sn ileri</button>
         <script>
-          document.onreadystatechange = () => {
-            if (document.readyState === 'complete') {
                 let ws;
                 ws = new WebSocket("ws://localhost:3000");
            
@@ -50,9 +48,6 @@
               if(JSON.parse(e.data).message != "ping")
                 console.log(JSON.parse(e.data));
             }
-          }
-          
-          }
         </script>
     </body>
 </html>
