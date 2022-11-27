@@ -31,8 +31,18 @@ const sendData = () => {
 
             function sendVideoEvent(event){
                 object = {clientID: "none", roomID: "asdad", message: event, choice: "sendMessage"}
-                ws.send(JSON.stringify(object));
                 console.log(`Event ${event} sent to the server`)
+                if (ws.readyState === WebSocket.OPEN) {
+                  object = {clientID: null, roomID: "asdad", message: "roomConnecting!", choice: "Room"}
+                  ws.send(JSON.stringify(object));
+            
+                } else if (ws.readyState == WebSocket.CONNECTING) {
+                  // Wait for the open event, maybe do something with promises
+                  // depending on your use case. I believe in you developer!
+                  ws.addEventListener('open', () => sendData())
+                } else {
+                  // etc.
+                }                
             }
             ws.onmessage = (e) => {
               if(JSON.parse(e.data).message != "ping")
