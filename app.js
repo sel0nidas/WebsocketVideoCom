@@ -45,6 +45,6 @@ io.on("connection", (socket) => {
 });
 
 
-http.listen(port,  ["localhost" ], () => {
+http.listen(port, () => {
 	console.log("Eventually, started");
 })
