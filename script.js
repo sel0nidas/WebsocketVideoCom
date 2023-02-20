@@ -1,9 +1,4 @@
-var socket = io("http://localhost:8000", {
-    withCredentials: true,
-    extraHeaders: {
-      "my-custom-header": "abcd"
-    }
-    })
+var socket = io();
     
   function connect() {
       socket.emit("video message","deneme");
