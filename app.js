@@ -1,4 +1,3 @@
-const fs = require('fs');
 const express = require('express'); 
 const cors = require('cors'); 
 const app = express();
@@ -8,10 +7,6 @@ const io = require("socket.io")(http, {cors: '*', credentials: true});
 const port = process.env.port || 8000 ;
 
 app.use(cors());
-
-app.get(('/test'), (req, res, next) => {
-    res.send("asd");
-});
 
 app.get(('/test'), (req, res, next) => {
     res.send("asd");
