@@ -1,0 +1,21 @@
+<html>
+  <head>
+  	<script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io("http://localhost:8000", {
+    withCredentials: true,
+    extraHeaders: {
+      "my-custom-header": "abcd"
+    }
+    })
+    
+  function connect() {
+      socket.emit("video message","pause");
+  }
+      
+    </script>
+  </head>
+<body>
+  <button id="btn" onclick="connect()">CONNECT</button>
+</body>
+</html>

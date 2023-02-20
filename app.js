@@ -1,5 +1,7 @@
+const fs = require('fs');
 const express = require('express'); 
 const cors = require('cors'); 
+var path = require('path');
 const app = express();
 const http = require('http').Server(app);
 const io = require("socket.io")(http, {cors: '*', credentials: true});
@@ -8,16 +10,16 @@ const port = process.env.port || 8000 ;
 
 app.use(cors());
 
-app.get(('/test'), (req, res, next) => {
-    res.send("asd");
+app.get(('/'), (req, res, next) => {
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
-
 
 io.on("connection", (socket) => {
 	
 	console.log("a user connected");
 
 	socket.on("video message",(a)=>{
+		console.log(a);
 		socket.broadcast.emit("video message",a)	
 		/*
 		if(a.playerstate == 1 || a.playerstate == 2 || a.playerstate == -1 || a.playerstate == 3){
@@ -39,6 +41,6 @@ io.on("connection", (socket) => {
 });
 
 
-http.listen(port, () => {
+http.listen(port,  ["172.24.112.1", "localhost" ], () => {
 	console.log("Eventually, started");
 })
