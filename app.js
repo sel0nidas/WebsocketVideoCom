@@ -4,7 +4,12 @@ const cors = require('cors');
 var path = require('path');
 const app = express();
 const http = require('http').Server(app);
-const io = require("socket.io")(http, {cors: '*', credentials: true});
+const io = require("socket.io")(http, {
+  allowRequest: (req, callback) => {
+    const noOriginHeader = req.headers.origin === undefined;
+    callback(null, noOriginHeader);
+  }
+});
 
 const port = process.env.port || 8000 ;
 
