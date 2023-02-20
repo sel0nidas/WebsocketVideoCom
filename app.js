@@ -14,6 +14,10 @@ app.get(('/'), (req, res, next) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+app.get(('/test'), (req, res, next) => {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
 io.on("connection", (socket) => {
 	
 	console.log("a user connected");
