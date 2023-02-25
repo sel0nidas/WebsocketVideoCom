@@ -14,10 +14,6 @@ app.get(('/'), (req, res, next) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get(('/test'), (req, res, next) => {
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
-
 io.on("connection", (socket) => {
 	
 	console.log("a user connected");
@@ -45,6 +41,6 @@ io.on("connection", (socket) => {
 });
 
 
-http.listen(port, () => {
+http.listen(port,  ["192.168.1.200"], () => {
 	console.log("Eventually, started");
 })
