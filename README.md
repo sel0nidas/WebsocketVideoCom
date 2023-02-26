@@ -19,3 +19,13 @@ Real Time Remote Netflix Controller for mobile
 
 # I know, you wanna try first
 Live demo can be tried [here](https://remotevideocontroller.onrender.com)
+You must install the chrome extension to try it on netflix 
+
+#### Features or Technologies i want to add
+
+- PWA
+- Voice adjustment
+- Subtitle on/off
+
+
+
