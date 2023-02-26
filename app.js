@@ -4,7 +4,9 @@ const cors = require('cors');
 var path = require('path');
 const app = express();
 const http = require('http').Server(app);
-const io = require("socket.io")(http, {cors: 'https://remotevideocontroller.onrender.com/', credentials: true});
+const io = require("socket.io")(http, {cors: {
+    origin: "http://localhost:8080"
+  });
 
 const port = process.env.port || 8000 ;
 
