@@ -15,3 +15,6 @@ Real Time Remote Netflix Controller
 - Node.js
 - Chrome Extension
 - HTML, CSS
+
+# I know, you wanna try first
+Live demo can be tried [here](https://remotevideocontroller.onrender.com)
