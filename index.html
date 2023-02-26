@@ -72,12 +72,7 @@
          }
       }
 
-      var socket = io("http://127.0.0.1:8000", {
-        withCredentials: true,
-        extraHeaders: {
-      "my-custom-header": "abcd"
-    }
-    })
+      var socket = io("http://127.0.0.1:8000")
     
     socket.on("video message",(a)=>{
 
