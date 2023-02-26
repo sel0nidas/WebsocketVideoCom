@@ -8,3 +8,10 @@ Real Time Remote Netflix Controller
 > Seeking is not so well because of the limits that Netflix has. You must pause & play to make video controls show up and then you will be able to seek.
 - Real Time subtitle display 
 > (current time stamp's and previous's subs)
+
+
+## Technologies
+- Socket.io
+- Node.js
+- Chrome Extension
+- HTML, CSS
