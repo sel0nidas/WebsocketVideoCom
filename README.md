@@ -17,7 +17,7 @@ Real Time Remote Netflix Controller for mobile
 - Chrome Extension
 - HTML, CSS
 
-# I know, you wanna try first
+## Demo
 Live demo can be tried [here](https://remotevideocontroller.onrender.com)
 You must install the chrome extension to try it on netflix 
 
