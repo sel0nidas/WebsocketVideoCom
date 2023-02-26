@@ -1,6 +1,7 @@
 # WebsocketVideoCom
 
-Real Time Remote Netflix Controller
+Real Time Remote Netflix Controller for mobile 
+> You can try on a non-mobile device but main user experience has designed for mobile.
 
 ## Features
 
