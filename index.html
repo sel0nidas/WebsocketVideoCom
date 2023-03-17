@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
       body{
         position: relative;
@@ -79,19 +80,7 @@
       }
     </style>
     <script>
-      function allLetter(inputtxt)
-      {
-       var letters = /^[A-Za-z]+$/;
-       if(inputtxt.value.match(letters))
-         {
-          return true;
-         }
-       else
-         {
-         return false;
-         }
-      }
-    var socket = io("https://remotevideocontroller.onrender.com/");
+    var socket = io("http://192.168.1.200:8000")
 
     socket.on("video message",(a)=>{
 
@@ -143,6 +132,15 @@
               e.querySelector("svg").setAttribute("fill-opacity", "1");
               e.setAttribute("data-msg", "subtitle-on")
           break;
+          case "controls-on":
+              e.querySelector("img").style.opacity = "0.3";
+            e.setAttribute("data-msg", "controls-off")
+          break;
+
+          case "controls-off":
+              e.querySelector("img").style.opacity = "1";
+              e.setAttribute("data-msg", "controls-on")
+          break;
         }
         socket.emit("video message", msg);
     }
@@ -169,10 +167,30 @@
         e.setAttribute("data-msg", "audio-on");
       }
     }
-      
+    function randomString(length) {
+      var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');     
+      if (! length) {
+          length = Math.floor(Math.random() * chars.length);
+      }
+  
+      var str = '';
+      for (var i = 0; i < length; i++) {
+          str += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return str;
+    }
     </script>
   </head>
 <body>
+  <!--
+  <main>
+		<div id="qrcode"></div>
+	</main>
+	
+	<script>
+		var qrcode = new QRCode("qrcode", randomString(8));
+	</script>
+  -->
   <!--
   <div class="btn-group dropup col-3 p-0" style="position: absolute; right: 0; top: 10px; z-index: 999; height: 60px;">
     <button type="button" class="btn btn-black" data-toggle="dropdown" aria-expanded="false">
@@ -186,8 +204,13 @@
   </div>
   <div>
   -->
-  <button id="subtitle" class="col-3 btn btn-link height-10vh" data-msg="subtitle-off" onclick="send(this)" style="position: absolute; right: 0; top: 10px; z-index: 999;">
-    <svg id="sub-icon" height="100%" version="1.1" viewBox="0 0 36 36" width="100%" fill-opacity="0.3"><use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path d="M11,11 C9.9,11 9,11.9 9,13 L9,23 C9,24.1 9.9,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M11,17 L14,17 L14,19 L11,19 L11,17 L11,17 Z M20,23 L11,23 L11,21 L20,21 L20,23 L20,23 Z M25,23 L22,23 L22,21 L25,21 L25,23 L25,23 Z M25,19 L16,19 L16,17 L25,17 L25,19 L25,19 Z" fill="#fff" id="ytp-id-17"></path></svg>
+  
+  <button id="controls" class="btn btn-link height-10vh" data-msg="controls-on" onclick="send(this)" style="position: absolute; left: 0; top: 10px; z-index: 999;">
+    <img src="/images/video-player.png" height="40" style="opacity: 1;">  
+  </button>
+
+  <button id="subtitle" class="btn btn-link height-10vh" data-msg="subtitle-on" onclick="send(this)" style="position: absolute; right: 0; top: 10px; z-index: 999;">
+    <svg id="sub-icon" height="100%" version="1.1" viewBox="0 0 36 36" fill-opacity="1"><use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path d="M11,11 C9.9,11 9,11.9 9,13 L9,23 C9,24.1 9.9,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M11,17 L14,17 L14,19 L11,19 L11,17 L11,17 Z M20,23 L11,23 L11,21 L20,21 L20,23 L20,23 Z M25,23 L22,23 L22,21 L25,21 L25,23 L25,23 Z M25,19 L16,19 L16,17 L25,17 L25,19 L25,19 Z" fill="#fff" id="ytp-id-17"></path></svg>
   </button>
     <div id="sub" class="row"></div>
 
