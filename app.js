@@ -4,10 +4,7 @@ const cors = require('cors');
 var path = require('path');
 const app = express();
 const http = require('http').Server(app);
-const io = require("socket.io")(http, {cors: {
-    origin: "*"
-  }
-				      });
+const io = require("socket.io")(http, {cors: '*'});
 
 const port = process.env.port || 8000 ;
 
@@ -16,11 +13,17 @@ app.use(cors());
 app.get(('/'), (req, res, next) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
+app.use(express.static(__dirname, { // host the whole directory
+    extensions: ["html", "htm", "gif", "png"],
+}))
+
 
 io.on("connection", (socket) => {
 	
 	console.log("a user connected");
-
+	socket.on("disconnect", ()=>{
+		console.log("a user disconnected");
+	})
 	socket.on("video message",(a)=>{
 		console.log(a);
 		socket.broadcast.emit("video message",a)	
@@ -44,6 +47,6 @@ io.on("connection", (socket) => {
 });
 
 
-http.listen(port, () => {
+http.listen(port,  ["192.168.1.200"], () => {
 	console.log("Eventually, started");
 })
