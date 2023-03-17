@@ -1,13 +1,15 @@
 <html>
   <head>
-  	<!--<script src="/socket.io/socket.io.js"></script>-->
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  	<script src="/socket.io/socket.io.js"></script>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     <style>
       body{
+        position: relative;
         touch-action: manipulation;
         background-color: #000;
       }
@@ -16,10 +18,25 @@
         justify-content: center;
         align-items: center;
         touch-action: manipulation;
+        border-radius: 0 !important;
+      }
+      .mute-volume-btn{
+        border-radius: 0.5rem !important;
+        padding: 20px 20px;
+      }
+      .height-10vh{
+        height: 10vh;
+      }
+      .height-20vh{
         height: 20vh;
       }
       .row{
         margin: auto 0 !important;
+      }
+      .all-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       #sub{
         display: flex;
@@ -57,6 +74,9 @@
         text-rendering: optimizeLegibility;
         fill: white;
       }
+      .dropdown-item:hover, .dropdown-item:active{
+        background-color: #000;
+      }
     </style>
     <script>
       function allLetter(inputtxt)
@@ -72,8 +92,8 @@
          }
       }
 
-      var socket = io("https://remotevideocontroller.onrender.com/");
-    
+    var socket = io("http://192.168.1.200:8000")
+
     socket.on("video message",(a)=>{
 
       var messageBody = document.getElementById('sub');
@@ -82,13 +102,14 @@
       var punctRE = /[\u2000-\u206F\u2E00-\u2E7F\\!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/g;
       var spaceRE = /\s+/g;
 
-      console.log(a);
-      subtitle = JSON.parse(a).replace(/\n/, '<br>').split(/&nbsp;|\b\s+/g);
+      subtitle = JSON.parse(a).replace(/\n/, ' <br>').trim().split(/&nbsp;|\b\s+/g);
       var text = ""
+      
+      console.log(subtitle);
       subtitle.forEach(element => {
-        text += element + " ";
+          text += element + " "
       })
-
+      
       var elementA = document.createElement('div');
       elementA.innerHTML = text;
       messageBody.appendChild(elementA);
@@ -114,32 +135,153 @@
             e.classList.add("btn-dark");
             e.querySelector("i").classList.add("fa-play");
             break;
+          case "subtitle-on":
+            e.querySelector("svg").setAttribute("fill-opacity", "0.3"); 
+            e.setAttribute("data-msg", "subtitle-off")
+          break;
+
+          case "subtitle-off":
+              e.querySelector("svg").setAttribute("fill-opacity", "1");
+              e.setAttribute("data-msg", "subtitle-on")
+          break;
         }
         socket.emit("video message", msg);
+    }
+    function sendVolume(value) {
+      socket.emit("video message", {type:"audioVolume", volume: value});
+    }
+    function muteOrNot(e) {
+      var data = e.getAttribute("data-msg");
+
+      if(data == "audio-on"){
+        socket.emit("video message", {type:"audioVolume", volume: 0});
+        e.classList.remove("btn-light");
+        e.classList.add("btn-danger");
+        e.querySelector("i").classList.remove("fa-volume-up");
+        e.querySelector("i").classList.add("fa-volume-off");
+        e.setAttribute("data-msg", "audio-off");
+      }
+      else{
+        socket.emit("video message", {type:"audioVolume", volume: document.getElementById("volume").value});
+        e.classList.add("btn-light");
+        e.classList.remove("btn-danger");
+        e.querySelector("i").classList.add("fa-volume-up");
+        e.querySelector("i").classList.remove("fa-volume-off");
+        e.setAttribute("data-msg", "audio-on");
+      }
     }
       
     </script>
   </head>
 <body>
+  <!--
+  <div class="btn-group dropup col-3 p-0" style="position: absolute; right: 0; top: 10px; z-index: 999; height: 60px;">
+    <button type="button" class="btn btn-black" data-toggle="dropdown" aria-expanded="false">
+      <i class="fas fa-2x fa-ellipsis-v text-white"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right" style="background-color: black;">
+      <button class="dropdown-item height-10vh" style="display: flex; justify-content: flex-end;" type="button"><img src="images/netflix_logo.png" height="100%"></button>
+      <button class="dropdown-item height-10vh" style="display: flex; justify-content: flex-end;" type="button"><img src="images/disneyplus_logo.png" height="100%"></button>
+      <button class="dropdown-item height-10vh" style="display: flex; justify-content: flex-end;" type="button"><img src="images/primevideo_logo.png" height="100%"></button>
+    </div>
+  </div>
   <div>
-    
+  -->
+  <button id="subtitle" class="col-3 btn btn-link height-10vh" data-msg="subtitle-off" onclick="send(this)" style="position: absolute; right: 0; top: 10px; z-index: 999;">
+    <svg id="sub-icon" height="100%" version="1.1" viewBox="0 0 36 36" width="100%" fill-opacity="0.3"><use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path d="M11,11 C9.9,11 9,11.9 9,13 L9,23 C9,24.1 9.9,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M11,17 L14,17 L14,19 L11,19 L11,17 L11,17 Z M20,23 L11,23 L11,21 L20,21 L20,23 L20,23 Z M25,23 L22,23 L22,21 L25,21 L25,23 L25,23 Z M25,19 L16,19 L16,17 L25,17 L25,19 L25,19 Z" fill="#fff" id="ytp-id-17"></path></svg>
+  </button>
     <div id="sub" class="row"></div>
 
     <div class="row">
-      <button id="backward" class="col-3 btn btn-danger" data-msg="backward" onclick="send(this)">
+      
+      <!--
+      <button class="height-10vh btn btn-black col-3 all-center row">
+        <img src="images/netflix_logo.png" height="100%">
+      </button>
+
+      <button class="height-10vh btn btn-black all-center col-3 row">
+        <img src="images/disneyplus_logo.png" height="100%">
+      </button>
+
+      <button class="height-10vh btn btn-black all-center col-3 row">
+        <img src="images/primevideo_logo.png" height="100%">
+      </button>
+      -->
+
+      <!--
+      <div class="height-10vh bg-light col-9 row">
+        <div class="col-2 all-center">
+          <button onclick="muteOrNot(this)" class="btn btn-light mute-volume-btn" data-msg="audio-on">
+            <i class="fas fa-volume-up"></i>
+          </button>
+        </div>
+        <div class="slidecontainer col-10 all-center bg-light">
+          <input id="volume" oninput="sendVolume(this.value);" aria-colcount="10" type="range" orient="vertical" min="0" max="100" value="50" class="slider bg-dark">
+        </div>
+      </div>
+      -->
+      <!--
+      <button id="subtitle" class="col-3 btn btn-link height-10vh" data-msg="subtitle-off" onclick="send(this)">
+        <svg id="sub-icon" height="100%" version="1.1" viewBox="0 0 36 36" width="100%" fill-opacity="0.3"><use class="ytp-svg-shadow" xlink:href="#ytp-id-17"></use><path d="M11,11 C9.9,11 9,11.9 9,13 L9,23 C9,24.1 9.9,25 11,25 L25,25 C26.1,25 27,24.1 27,23 L27,13 C27,11.9 26.1,11 25,11 L11,11 Z M11,17 L14,17 L14,19 L11,19 L11,17 L11,17 Z M20,23 L11,23 L11,21 L20,21 L20,23 L20,23 Z M25,23 L22,23 L22,21 L25,21 L25,23 L25,23 Z M25,19 L16,19 L16,17 L25,17 L25,19 L25,19 Z" fill="#fff" id="ytp-id-17"></path></svg>
+      </button>
+    -->
+      <button id="backward" class="col-3 btn btn-light height-20vh" data-msg="backward" onclick="send(this)">
         <i class="fas fa-backward"></i>
       </button>
-      
-      <button id="playpause" class="col-6 btn btn-dark" data-msg="play" onclick="send(this)">
+      <button id="playpause" class="col-6 btn btn-dark height-20vh" data-msg="play" onclick="send(this)">
         <i class="fas fa-play"></i>
       </button>
       <!--
       <button id="playpause" class="col-3 btn btn-light" data-msg="pause" onclick="send(this)">
         <i class="fas fa-pause"></i>
-        -->
+       
 
-      </button>
-      <button id="forward" class="col-3 btn btn-success" data-msg="forward" onclick="send(this)">
+      </button> -->
+
+
+      <style>
+        /*
+        .slidecontainer {
+          width: 100%;
+        }
+        */
+        .slider {
+          appearance: none;
+          width: 100%;
+          height: 25px;
+          outline: none;
+          opacity: 0.7;
+          -webkit-transition: .2s;
+          transition: opacity .2s;
+        }
+        
+        .slider:hover {
+          opacity: 1;
+        }
+        
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 25px;
+          height: 25px;
+          background: #04AA6D;
+          cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+          width: 25px;
+          height: 25px;
+          background: #04AA6D;
+          cursor: pointer;
+        }
+        </style>
+        
+        <!--
+        <div class="slidecontainer">
+          <input type="range" orient="vertical" min="1" max="100" value="50" class="slider" id="myRange">
+        </div>
+        -->
+      <button id="forward" class="col-3 btn btn-light height-20vh" data-msg="forward" onclick="send(this)">
         <i class="fas fa-forward"></i>
       </button>
     </div>
