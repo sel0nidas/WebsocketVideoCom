@@ -1,14 +1,21 @@
 # WebsocketVideoCom
 
-Real Time Remote Netflix Controller for mobile 
+Real Time Remote Video Platform Controller for mobile.
 > You can try on a non-mobile device but main user experience has designed for mobile.
 
 ## Features
-- Real Time Pause/Play/Seek(Forward & Backward)
-> Seeking is not so well because of the limits that Netflix has. You must pause & play to make video controls show up and then you will be able to seek.
+- Real Time Pause/Play/Forward&Backward
 - Real Time subtitle display 
 > (current time stamp's and previous's subs)
+- Subtitle on/off
+- Player Controls Hide/Show
+- Voice Adjustment
+> Voice Adjustment is passive right now because of the enormous pressure it makes on the server
 
+## Supported Streaming Services
+- Netflix
+- Disney+
+- Prime Video
 
 ## Technologies
 - Socket.io
@@ -19,13 +26,7 @@ Real Time Remote Netflix Controller for mobile
 
 ## Demo
 Live demo can be tried [here](https://remotevideocontroller.onrender.com)
-You must install the chrome extension to try it on netflix 
-
-
-#### Features or Technologies i want to add
-- PWA
-- Voice adjustment
-- Subtitle on/off
+You must install the chrome extension to try it on netflix
 
 
 
