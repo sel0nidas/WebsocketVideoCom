@@ -166,13 +166,14 @@
         e.setAttribute("data-msg", "audio-on");
       }
     }
+
     </script>
   </head>
 <body>
   <button id="controls" class="btn btn-link height-10vh" data-msg="controls-on" onclick="send(this)" style="position: absolute; left: 0; top: 10px; z-index: 999;">
     <img src="/images/video-player.png" height="40" style="opacity: 1;">  
   </button>
-
+  
   <a id="qrCode" href="/qr" class="btn btn-light height-10vh" data-msg="controls-on" onclick="send(this)" style="position: absolute; 
   left: 0; 
   right: 0; 
@@ -189,6 +190,7 @@
     <div id="sub" class="row"></div>
 
     <div class="row">
+      <span id="asdx"></span>
       <button id="backward" class="col-3 btn btn-light height-20vh" data-msg="backward" onclick="send(this)">
         <i class="fas fa-backward"></i>
       </button>
@@ -237,5 +239,9 @@
       </button>
     </div>
   </div>
+  <script>
+    
+      document.getElementById("asdx").innerHTML = localStorage.getItem("qrCode");
+  </script>
 </body>
 </html>
