@@ -42,6 +42,9 @@ io.on("connection", (socket) => {
   });
   socket.on("video message", (a) => {
     console.log(a);
+	if(a.roomId != null)
+    socket.to(a.roomId).emit("video message", a);
+	else
     socket.broadcast.to(a).emit("video message", a);
     // Uncomment the following code if you want to save the data to a file
     /*
