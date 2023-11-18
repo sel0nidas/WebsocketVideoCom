@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
     console.log("a user disconnected");
   });
   socket.on("join room", (id) => {
-    //socket.join("072");
+    socket.join(id);
     console.log(id);
   });
   socket.on("video message", (a) => {
