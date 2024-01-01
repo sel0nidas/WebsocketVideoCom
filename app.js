@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
   });
   socket.on("video message", (a) => {
     console.log(a);
-    socket.broadcast.to(a).emit("video message", a);
+    socket.broadcast.emit("video message", a);
     // Uncomment the following code if you want to save the data to a file
     /*
     if (a.playerstate == 1 || a.playerstate == 2 || a.playerstate == -1 || a.playerstate == 3) {
