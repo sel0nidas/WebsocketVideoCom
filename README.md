@@ -26,7 +26,8 @@ Real Time Remote Video Platform Controller for mobile.
 
 ## Demo
 Live demo can be tried [here](https://remotevideocontroller.onrender.com)
-You must install the chrome extension to try it on netflix
+You must install the chrome extension to try it on netflix 
+> (Extension is not published yet, soon maybe :) )
 
 
 
