@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const http = require('http').Server(app);
 
-
+/*
 const io = require("socket.io")(http, {
   cors: {
     origin: ["http://remotevideocontroller.onrender.com", "chrome-extension://hkbagmafpdcfpjoeaookbcbjbijdmdnf"],
@@ -14,9 +14,11 @@ const io = require("socket.io")(http, {
     credentials: true
   }
 });
+*/
 
 
-//const io = require("socket.io")(http, { cors: '*' });
+const io = require("socket.io")(http, { cors: '*' });
+
 /*
 const io = require("socket.io")(http, { 
   cors: {
