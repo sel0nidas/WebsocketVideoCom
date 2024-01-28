@@ -80,8 +80,8 @@
     </style>
     <script>
     var socket = io()
-      if(localStorage.getItem("roomID"))
-    socket.emit("join room", localStorage.getItem("roomID"))
+      //if(localStorage.getItem("roomID"))
+    //socket.emit("join room", localStorage.getItem("roomID"))
     socket.on("video message",(a)=>{
       var messageBody = document.getElementById('sub');
       
