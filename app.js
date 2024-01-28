@@ -61,6 +61,6 @@ io.on("connection", (socket) => {
   */
 });
 
-http.listen(port, ["127.0.0.1", "192.168.1.200"], () => {
+http.listen(port, ["127.0.0.1"], () => {
   console.log("Server started");
 });
